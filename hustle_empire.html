@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUSTLE EMPIRE — Build Your Digital Fortune</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --gold: #f0c040;
+    --gold2: #e8a800;
+    --white: #f5f0e8;
+    --dim: #1a1a1a;
+    --red: #e63030;
+    --green: #00e676;
+    --card-bg: #111111;
+    --border: rgba(240,192,64,0.2);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top:0; left:0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s ease, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; top:0; left:0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    opacity: 0.6;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content:'';
+    position: fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0;
+    z-index: 100;
+    display: flex; align-items:center; justify-content: space-between;
+    padding: 20px 60px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .logo span { color: var(--white); }
+  .nav-links { display:flex; gap:40px; list-style:none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.6);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 12px 24px;
+    cursor: none;
+    font-weight: 700;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold2); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(240,192,64,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240,192,64,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(240,192,64,0.12) 0%, transparent 70%);
+    right: -100px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index:2; max-width: 800px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge::before {
+    content:'';
+    width:6px; height:6px;
+    background: var(--green);
+    border-radius:50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.4; transform:scale(1.4); }
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero h1 .gold { color: var(--gold); }
+  .hero h1 .outline {
+    -webkit-text-stroke: 1px rgba(245,240,232,0.3);
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.6);
+    max-width: 520px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap:16px; align-items:center;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .btn-primary {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 18px 36px;
+    cursor: none;
+    font-weight: 700;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #fff; transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--gold); }
+  .btn-ghost {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(245,240,232,0.3);
+    padding: 18px 36px;
+    cursor: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats {
+    position: absolute; right: 60px; bottom: 80px;
+    display: flex; gap:48px;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--gold);
+    line-height:1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(245,240,232,0.4);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(30px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--gold);
+    padding: 12px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-inner {
+    display: flex;
+    animation: ticker 25s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: var(--black);
+    padding: 0 48px;
+    display: flex; align-items: center; gap:16px;
+  }
+  .ticker-dot { width:6px; height:6px; background: var(--black); border-radius:50%; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION COMMON */
+  section { padding: 100px 60px; }
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 1;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 16px;
+    color: rgba(245,240,232,0.5);
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 64px;
+  }
+
+  /* HUSTLES GRID */
+  .hustles { background: var(--black); }
+  .hustles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .hustle-card {
+    background: var(--card-bg);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: transform 0.3s ease;
+    border: 1px solid transparent;
+  }
+  .hustle-card::before {
+    content:'';
+    position: absolute; inset:0;
+    background: linear-gradient(135deg, rgba(240,192,64,0.06) 0%, transparent 60%);
+    opacity:0;
+    transition: opacity 0.3s;
+  }
+  .hustle-card:hover { transform: translateY(-4px); border-color: var(--border); }
+  .hustle-card:hover::before { opacity:1; }
+  .hustle-card.featured {
+    background: var(--gold);
+    color: var(--black);
+    grid-row: span 1;
+  }
+  .hustle-card.featured .card-icon { color: var(--black); opacity:0.6; }
+  .hustle-card.featured .card-title { color: var(--black); }
+  .hustle-card.featured .card-desc { color: rgba(8,8,8,0.7); }
+  .hustle-card.featured .card-tag { background: var(--black); color: var(--gold); }
+  .hustle-card.featured:hover { transform: translateY(-4px); }
+  .card-icon {
+    font-size: 36px;
+    margin-bottom: 24px;
+    display: block;
+    opacity: 0.8;
+  }
+  .card-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(245,240,232,0.2);
+    margin-bottom: 12px;
+  }
+  .hustle-card.featured .card-number { color: rgba(8,8,8,0.3); }
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .card-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.55);
+    margin-bottom: 24px;
+  }
+  .card-tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    background: rgba(240,192,64,0.1);
+    color: var(--gold);
+    padding: 4px 10px;
+    border: 1px solid rgba(240,192,64,0.2);
+  }
+  .card-arrow {
+    position: absolute; bottom:40px; right:40px;
+    font-size: 24px;
+    opacity: 0;
+    transform: translate(-8px, 8px);
+    transition: all 0.3s;
+    color: var(--gold);
+  }
+  .hustle-card.featured .card-arrow { color: var(--black); }
+  .hustle-card:hover .card-arrow { opacity:1; transform: translate(0,0); }
+
+  /* INCOME CALCULATOR */
+  .calculator-section {
+    background: var(--dim);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .calc-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .calc-box {
+    background: var(--black);
+    border: 1px solid var(--border);
+    padding: 48px;
+  }
+  .calc-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 8px;
+    display:block;
+  }
+  .calc-income {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 32px;
+  }
+  .calc-slider-group { margin-bottom: 28px; }
+  .slider-header {
+    display:flex; justify-content:space-between;
+    margin-bottom: 10px;
+  }
+  .slider-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(245,240,232,0.5);
+    letter-spacing: 1px;
+  }
+  .slider-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+  }
+  input[type=range] {
+    width:100%;
+    -webkit-appearance: none;
+    height: 3px;
+    background: rgba(240,192,64,0.2);
+    outline:none;
+    cursor: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    background: var(--gold);
+    border-radius:0;
+    cursor: none;
+  }
+  .calc-breakdown {
+    display:flex; flex-direction:column; gap:12px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 24px;
+  }
+  .breakdown-row {
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .breakdown-name {
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    color: rgba(245,240,232,0.45);
+    letter-spacing:1px;
+  }
+  .breakdown-val {
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    color: var(--green);
+  }
+
+  /* HOW IT WORKS */
+  .steps-section { background: var(--black); }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    counter-reset: step;
+  }
+  .step-card {
+    background: var(--card-bg);
+    padding: 40px 32px;
+    position: relative;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .step-card:hover { border-color: var(--gold); }
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: rgba(240,192,64,0.08);
+    line-height: 1;
+    position:absolute; top:16px; right:24px;
+  }
+  .step-icon { font-size:28px; margin-bottom:20px; }
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .step-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.45);
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    background: var(--dim);
+    border-top: 1px solid var(--border);
+  }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .testi-card {
+    background: var(--black);
+    border: 1px solid var(--border);
+    padding: 36px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .testi-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .testi-quote {
+    font-size: 48px;
+    color: var(--gold);
+    line-height: 0.8;
+    margin-bottom: 16px;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  .testi-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 28px;
+  }
+  .testi-author { display:flex; align-items:center; gap:14px; }
+  .testi-avatar {
+    width:44px; height:44px;
+    border-radius:50%;
+    background: var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue',sans-serif;
+    font-size: 20px;
+    color: var(--black);
+  }
+  .testi-name {
+    font-family:'Syne', sans-serif;
+    font-weight:700;
+    font-size: 14px;
+  }
+  .testi-income {
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    color: var(--green);
+    letter-spacing:1px;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--black);
+    text-align: center;
+    padding: 120px 60px;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+  }
+  .cta-glow {
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(240,192,64,0.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .cta-section .section-title { font-size: clamp(60px, 9vw, 120px); position:relative; }
+  .cta-section .section-title .outline {
+    -webkit-text-stroke: 1px rgba(245,240,232,0.2);
+    color: transparent;
+  }
+  .cta-section p {
+    font-size:17px;
+    color: rgba(245,240,232,0.5);
+    max-width:480px;
+    margin: 0 auto 48px;
+    line-height:1.7;
+    position:relative;
+  }
+  .cta-actions { display:flex; gap:16px; justify-content:center; position:relative; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dim);
+    padding: 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:24px;
+    letter-spacing:4px;
+    color: var(--gold);
+  }
+  .footer-logo span { color: var(--white); }
+  .footer-links { display:flex; gap:32px; }
+  .footer-links a {
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:2px;
+    color: rgba(245,240,232,0.4);
+    text-decoration:none;
+    text-transform:uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy {
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    color: rgba(245,240,232,0.25);
+    letter-spacing:1px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display:none; }
+    .hero { padding: 100px 24px 60px; }
+    section { padding: 80px 24px; }
+    .hustles-grid { grid-template-columns: 1fr; }
+    .calc-wrapper { grid-template-columns:1fr; gap:40px; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    footer { flex-direction:column; gap:24px; text-align:center; }
+    .footer-links { flex-wrap:wrap; justify-content:center; }
+    .hero-stats { position:static; margin-top:48px; justify-content:flex-start; }
+    .cta-actions { flex-direction:column; align-items:center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">HUSTLE<span>EMPIRE</span></a>
+  <ul class="nav-links">
+    <li><a href="#hustles">Hustles</a></li>
+    <li><a href="#calculator">Income Calc</a></li>
+    <li><a href="#steps">How It Works</a></li>
+    <li><a href="#testimonials">Results</a></li>
+  </ul>
+  <button class="nav-cta">Start Earning →</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🟢 6 Income Streams — All Proven</div>
+    <h1>BUILD YOUR<br><span class="gold">DIGITAL</span><br><span class="outline">EMPIRE</span></h1>
+    <p class="hero-sub">Stop trading time for money. Learn YouTube automation, Facebook automation, affiliate marketing, dropshipping, and trading — all in one place.</p>
+    <div class="hero-actions">
+      <a href="#hustles" class="btn-primary">Explore Hustles</a>
+      <a href="#calculator" class="btn-ghost">Calculate Income</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">12K+</div>
+      <div class="stat-label">Students</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$4.2M</div>
+      <div class="stat-label">Earned</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Success Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item"><span class="ticker-dot"></span> YT AUTOMATION</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> DROPSHIPPING</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> AFFILIATE MARKETING</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> FB AUTOMATION</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> TRADING</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> DIGITAL PRODUCTS</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> PASSIVE INCOME</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> FINANCIAL FREEDOM</div>
+    <!-- repeat -->
+    <div class="ticker-item"><span class="ticker-dot"></span> YT AUTOMATION</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> DROPSHIPPING</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> AFFILIATE MARKETING</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> FB AUTOMATION</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> TRADING</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> DIGITAL PRODUCTS</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> PASSIVE INCOME</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> FINANCIAL FREEDOM</div>
+  </div>
+</div>
+
+<!-- HUSTLES GRID -->
+<section class="hustles" id="hustles">
+  <span class="section-tag">// 06 Streams</span>
+  <h2 class="section-title">PICK YOUR<br>HUSTLE</h2>
+  <p class="section-sub">Every stream is designed for maximum automation and passive income potential.</p>
+
+  <div class="hustles-grid">
+    <!-- YT Automation -->
+    <div class="hustle-card">
+      <div class="card-number">01 / 06</div>
+      <span class="card-icon">▶</span>
+      <div class="card-title">YouTube Automation</div>
+      <div class="card-desc">Build faceless YouTube channels that generate ad revenue 24/7. Script, edit, upload — all automated. Earn while you sleep.</div>
+      <div class="card-tags">
+        <span class="card-tag">Passive</span>
+        <span class="card-tag">No Camera</span>
+        <span class="card-tag">Scalable</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- FB Automation - FEATURED -->
+    <div class="hustle-card featured">
+      <div class="card-number">02 / 06</div>
+      <span class="card-icon">f</span>
+      <div class="card-title">Facebook Automation</div>
+      <div class="card-desc">Monetize Facebook pages and groups with automated content. Drive traffic, earn from Meta bonuses and brand deals at scale.</div>
+      <div class="card-tags">
+        <span class="card-tag">HOT 🔥</span>
+        <span class="card-tag">Low Start</span>
+        <span class="card-tag">Fast ROI</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- Affiliate -->
+    <div class="hustle-card">
+      <div class="card-number">03 / 06</div>
+      <span class="card-icon">🔗</span>
+      <div class="card-title">Affiliate Marketing</div>
+      <div class="card-desc">Promote products, earn commissions. No inventory, no support — just traffic and conversion. The cleanest hustle in the game.</div>
+      <div class="card-tags">
+        <span class="card-tag">No Product</span>
+        <span class="card-tag">High Margin</span>
+        <span class="card-tag">Recurring</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- Dropshipping -->
+    <div class="hustle-card">
+      <div class="card-number">04 / 06</div>
+      <span class="card-icon">📦</span>
+      <div class="card-title">Dropshipping</div>
+      <div class="card-desc">Run an eCommerce store without touching inventory. Sell trending products, suppliers handle the rest. Your store runs 24/7.</div>
+      <div class="card-tags">
+        <span class="card-tag">eCommerce</span>
+        <span class="card-tag">No Stock</span>
+        <span class="card-tag">Global</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- Trading -->
+    <div class="hustle-card">
+      <div class="card-number">05 / 06</div>
+      <span class="card-icon">📈</span>
+      <div class="card-title">Trading</div>
+      <div class="card-desc">Forex, crypto, stocks. Learn technical analysis, risk management, and systematic strategies to grow your capital consistently.</div>
+      <div class="card-tags">
+        <span class="card-tag">Forex</span>
+        <span class="card-tag">Crypto</span>
+        <span class="card-tag">Stocks</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+
+    <!-- Digital Products -->
+    <div class="hustle-card">
+      <div class="card-number">06 / 06</div>
+      <span class="card-icon">⚡</span>
+      <div class="card-title">General Hustling</div>
+      <div class="card-desc">Freelancing, digital products, content creation, SMMA. Stack multiple income sources and build toward total financial freedom.</div>
+      <div class="card-tags">
+        <span class="card-tag">Freelance</span>
+        <span class="card-tag">Digital</span>
+        <span class="card-tag">Stack</span>
+      </div>
+      <div class="card-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- INCOME CALCULATOR -->
+<section class="calculator-section" id="calculator">
+  <div class="calc-wrapper">
+    <div>
+      <span class="section-tag">// Income Estimator</span>
+      <h2 class="section-title">HOW MUCH<br>WILL YOU<br>EARN?</h2>
+      <p class="section-sub">Slide the levers and see your potential monthly income across all active streams.</p>
+      <a href="#steps" class="btn-primary">Start Learning →</a>
+    </div>
+    <div class="calc-box">
+      <span class="calc-label">Estimated Monthly Income</span>
+      <div class="calc-income" id="totalIncome">$0</div>
+
+      <div class="calc-slider-group">
+        <div class="slider-header">
+          <span class="slider-name">YT AUTOMATION</span>
+          <span class="slider-val" id="ytVal">$0</span>
+        </div>
+        <input type="range" min="0" max="5000" value="0" id="ytSlider">
+      </div>
+
+      <div class="calc-slider-group">
+        <div class="slider-header">
+          <span class="slider-name">FB AUTOMATION</span>
+          <span class="slider-val" id="fbVal">$0</span>
+        </div>
+        <input type="range" min="0" max="3000" value="0" id="fbSlider">
+      </div>
+
+      <div class="calc-slider-group">
+        <div class="slider-header">
+          <span class="slider-name">AFFILIATE MARKETING</span>
+          <span class="slider-val" id="affVal">$0</span>
+        </div>
+        <input type="range" min="0" max="8000" value="0" id="affSlider">
+      </div>
+
+      <div class="calc-slider-group">
+        <div class="slider-header">
+          <span class="slider-name">DROPSHIPPING</span>
+          <span class="slider-val" id="dropVal">$0</span>
+        </div>
+        <input type="range" min="0" max="10000" value="0" id="dropSlider">
+      </div>
+
+      <div class="calc-slider-group">
+        <div class="slider-header">
+          <span class="slider-name">TRADING PROFITS</span>
+          <span class="slider-val" id="tradeVal">$0</span>
+        </div>
+        <input type="range" min="0" max="6000" value="0" id="tradeSlider">
+      </div>
+
+      <div class="calc-breakdown">
+        <div class="breakdown-row">
+          <span class="breakdown-name">ANNUAL PROJECTION</span>
+          <span class="breakdown-val" id="annualIncome">$0 / yr</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">DAILY AVERAGE</span>
+          <span class="breakdown-val" id="dailyIncome">$0 / day</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps-section" id="steps">
+  <span class="section-tag">// The Process</span>
+  <h2 class="section-title">YOUR ROAD<br>TO FREEDOM</h2>
+  <p class="section-sub">Four clear steps from zero to generating consistent online income.</p>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-icon">🎯</div>
+      <div class="step-title">PICK A STREAM</div>
+      <div class="step-desc">Choose the income stream that matches your skills, capital, and time availability. Start focused — master one before stacking.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-icon">📚</div>
+      <div class="step-title">LEARN THE SYSTEM</div>
+      <div class="step-desc">Access our step-by-step playbooks, video courses, and community. No fluff, no theory — only actionable frameworks that work.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-icon">🚀</div>
+      <div class="step-title">LAUNCH & ITERATE</div>
+      <div class="step-desc">Deploy your first campaign, store, or channel. Get feedback fast, optimize relentlessly, and scale what's working.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-icon">🏦</div>
+      <div class="step-title">STACK & AUTOMATE</div>
+      <div class="step-desc">Once your first stream is profitable, automate it and add the next. Build your empire stream by stream until money is truly passive.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <span class="section-tag">// Real Results</span>
+  <h2 class="section-title">PEOPLE ARE<br>WINNING</h2>
+  <p class="section-sub">These are real students who made the shift. Their results speak louder than any promise.</p>
+
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-text">Started with YouTube Automation 4 months ago. I have 3 channels now earning consistently. The system just works — I barely touch them anymore.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">JR</div>
+        <div>
+          <div class="testi-name">James R.</div>
+          <div class="testi-income">+ $3,200 / month · YT Automation</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-text">Dropshipping felt overwhelming until I followed the exact product research method here. Hit $8K in my second month. Still can't believe it.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">SM</div>
+        <div>
+          <div class="testi-name">Sofia M.</div>
+          <div class="testi-income">+ $8,100 / month · Dropshipping</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-text">The affiliate marketing blueprint is next level. Switched from 9-to-5 to full time online in 6 months. Facebook and email traffic combo is unstoppable.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">KL</div>
+        <div>
+          <div class="testi-name">Karl L.</div>
+          <div class="testi-income">+ $5,700 / month · Affiliate + FB</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <span class="section-tag">// Join Today</span>
+  <h2 class="section-title">START YOUR<br><span class="gold">EMPIRE</span><br><span class="outline">NOW</span></h2>
+  <p>Stop watching others win. Every day you wait is money left on the table. Your digital income starts today.</p>
+  <div class="cta-actions">
+    <a href="#" class="btn-primary">Get Full Access →</a>
+    <a href="#hustles" class="btn-ghost">Browse Hustles</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">HUSTLE<span>EMPIRE</span></div>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">Community</a>
+    <a href="#">Courses</a>
+    <a href="#">Blog</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 HustleEmpire. All rights reserved.</div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+  function animRing() { rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+  animRing();
+  document.querySelectorAll('a,button,input').forEach(el => {
+    el.addEventListener('mouseenter',()=>{ cursor.style.width='20px'; cursor.style.height='20px'; ring.style.width='52px'; ring.style.height='52px'; });
+    el.addEventListener('mouseleave',()=>{ cursor.style.width='12px'; cursor.style.height='12px'; ring.style.width='36px'; ring.style.height='36px'; });
+  });
+
+  // CALCULATOR
+  const sliders = ['yt','fb','aff','drop','trade'];
+  function updateCalc() {
+    let total = 0;
+    sliders.forEach(id => {
+      const val = parseInt(document.getElementById(id+'Slider').value);
+      document.getElementById(id+'Val').textContent = '$' + val.toLocaleString();
+      total += val;
+    });
+    document.getElementById('totalIncome').textContent = '$' + total.toLocaleString();
+    document.getElementById('annualIncome').textContent = '$' + (total*12).toLocaleString() + ' / yr';
+    document.getElementById('dailyIncome').textContent = '$' + Math.round(total/30).toLocaleString() + ' / day';
+  }
+  sliders.forEach(id => document.getElementById(id+'Slider').addEventListener('input', updateCalc));
+
+  // SCROLL FADE IN
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.hustle-card,.step-card,.testi-card').forEach(el => {
+    el.style.opacity='0'; el.style.transform='translateY(24px)'; el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
